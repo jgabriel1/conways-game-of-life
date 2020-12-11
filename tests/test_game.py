@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from .game import Game
+from game_of_life.game import Game
 
 
 class TestGame(TestCase):
