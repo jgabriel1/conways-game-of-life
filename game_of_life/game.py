@@ -1,56 +1,18 @@
 from os import system
-from random import randint
 from time import sleep
 
-from .cell import Cell
+from game_of_life.grid import Grid
 
 
 class Game:
     def __init__(self, size=10, random_fill=True):
         self._size = size
-        self._grid = [
-            [
-                Cell(
-                    randint(0, 1) if random_fill else 0,
-                )
-                for _ in range(size)
-            ]
-            for _ in range(size)
-        ]
+        self._state = Grid(size, random_fill)
 
     def __repr__(self):
-        string_form = ""
-
-        for row in self._grid:
-            for cell in row:
-                string_form += str(cell)
-
-            string_form += "\n"
-
-        string_form += "\n\n\n"
-
-        return string_form
-
-    def _get_cell(self, column, row):
-        if column < 0 or row < 0:
-            raise IndexError
-
-        return self._grid[row][column]
+        return str(self._state)
 
     def _get_alive_neighbors(self, column, row):
-        """
-        (0, 2)
-
-        i -> -1, 0, 1
-        j ->  1, 2, 3
-
-          0 1 2 3
-        0 0 1 0 0
-        1 0 0 1 0
-        2 1 1 1 0
-        3 0 0 0 0
-        """
-
         alive_neighbors = 0
 
         get_neighbors = lambda x: (x - 1, x, x + 1)
@@ -60,19 +22,16 @@ class Game:
                 if i == column and j == row:
                     continue
 
-                try:
-                    neighbor = self._get_cell(i, j)
+                neighbor = self._state[i, j]
 
-                    if neighbor.is_alive:
-                        alive_neighbors += 1
-                except IndexError:
-                    continue
+                if neighbor.is_alive:
+                    alive_neighbors += 1
 
         return alive_neighbors
 
     def _check_cell(self, column, row):
         alive_neighbors = self._get_alive_neighbors(column, row)
-        cell_is_alive = self._get_cell(column, row).is_alive
+        cell_is_alive = self._state[column, row].is_alive
 
         if alive_neighbors == 3:
             return True
@@ -82,22 +41,15 @@ class Game:
             return False
 
     def _build_next_grid(self):
-        next_grid = []
+        next_grid = Grid(self._size)
 
-        for i in range(self._size):
-            row = []
+        for _, i, j in self._state:
+            next_grid_cell = next_grid[i, j]
 
-            for j in range(self._size):
-                cell = Cell()
-
-                if self._check_cell(j, i):
-                    cell.set_alive()
-                else:
-                    cell.set_dead()
-
-                row.append(cell)
-
-            next_grid.append(row)
+            if self._check_cell(i, j):
+                next_grid_cell.set_alive()
+            else:
+                next_grid_cell.set_dead()
 
         return next_grid
 
@@ -110,7 +62,7 @@ class Game:
             print(self)
             sleep(0.1)
 
-            self._grid = next_grid
+            self._state = next_grid
 
     @classmethod
     def glider(cls, size=10):
@@ -119,6 +71,6 @@ class Game:
         game = cls(size, random_fill=False)
 
         for i, j in glider_cells:
-            game._grid[i][j].set_alive()
+            game._state[i, j].set_alive()
 
         return game
