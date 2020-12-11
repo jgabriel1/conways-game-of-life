@@ -3,7 +3,7 @@ class Cell:
         self._state = initial_state
 
     def __repr__(self):
-        return " # " if self.is_alive else "   "
+        return " * " if self.is_alive else "   "
 
     def set_alive(self):
         self._state = 1
