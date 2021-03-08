@@ -1,11 +1,14 @@
 import React from 'react';
 
-function App() {
+import Grid from './components/Grid';
+import GameProvider from './hooks/game';
+
+const App: React.FC = () => {
   return (
-    <div className="App">
-      <p>Hello World</p>
-    </div>
+    <GameProvider>
+      <Grid />
+    </GameProvider>
   );
-}
+};
 
 export default App;
