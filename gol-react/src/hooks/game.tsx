@@ -1,80 +1,47 @@
-import React, {
-  createContext,
-  useCallback,
-  useContext,
-  useReducer,
-} from 'react';
+import React, { createContext, useCallback, useContext, useState } from 'react';
+
 import { Game } from '../core/Game';
 
 interface GameContextData {
   grid: boolean[][];
   toggleCell: (x: number, y: number) => void;
   startGame: () => void;
+  stopGame: () => void;
 }
-
-type GameReducerState = { game: Game | null; grid: boolean[][] };
-
-type GameReducer = React.Reducer<
-  GameReducerState,
-  { type: 'UPDATE_GRID'; image: boolean[][] }
->;
 
 const GameContext = createContext({} as GameContextData);
 
 const GameProvider: React.FC = ({ children }) => {
-  const [{ game, grid }, gameDispatch] = useReducer<
-    GameReducer,
-    GameReducerState
-  >(
-    (state, action) => {
-      switch (action.type) {
-        case 'UPDATE_GRID':
-          return {
-            ...state,
-            grid: action.image,
-          };
-        default:
-          return state;
-      }
-    },
-    { game: null, grid: [] },
-    () => {
-      const newGame = Game.create({
-        gridHeight: 20,
-        gridWidth: 20,
-        refreshRate: 200,
-        shouldWrapAround: true,
-      });
+  const [grid, setGrid] = useState<boolean[][]>([]);
 
-      const initialImage = newGame.getImage();
+  const [game] = useState<Game>(() => {
+    const newGame = Game.create({
+      gridHeight: 20,
+      gridWidth: 20,
+      refreshRate: 200,
+      shouldWrapAround: true,
+    });
 
-      newGame.subscribeToImageUpdate(image => {
-        gameDispatch({ type: 'UPDATE_GRID', image });
-      });
+    const initialImage = newGame.getImage();
 
-      return { game: newGame, grid: initialImage };
-    },
-  );
+    setGrid(initialImage);
+
+    newGame.subscribeToImageUpdate(image => setGrid(image));
+
+    return newGame;
+  });
 
   const toggleCell = useCallback(
-    (x: number, y: number) => {
-      game?.toggleCell(x, y);
-    },
+    (x: number, y: number) => game.toggleCell(x, y),
     [game],
   );
 
-  const startGame = useCallback(() => {
-    game?.run();
-  }, [game]);
+  const startGame = useCallback(() => game.run(), [game]);
+
+  const stopGame = useCallback(() => game.stop(), [game]);
 
   return (
-    <GameContext.Provider
-      value={{
-        grid,
-        toggleCell,
-        startGame,
-      }}
-    >
+    <GameContext.Provider value={{ grid, toggleCell, startGame, stopGame }}>
       {children}
     </GameContext.Provider>
   );
