@@ -24,9 +24,28 @@ describe('Grid', () => {
     const grid = Grid.create({ height: 100, width: 100 });
 
     const cell = grid.getCell(50, 50);
-    const neighborCell = grid.getCell(51, 50);
+    const neighborCells = new Set(
+      [
+        [49, 49],
+        [49, 50],
+        [49, 51],
+        [51, 49],
+        [51, 50],
+        [51, 51],
+        [50, 49],
+        [50, 51],
+      ].map(([x, y]) => grid.getCell(x, y)),
+    );
 
-    expect(cell?.getNeighbors()).toContain(neighborCell);
+    const registeredCellNeighbors = new Set(cell?.getNeighbors());
+
+    registeredCellNeighbors.forEach(neighbor => {
+      expect(neighborCells.has(neighbor)).toBe(true);
+    });
+
+    neighborCells.forEach(neighbor => {
+      expect(registeredCellNeighbors.has(neighbor as Cell)).toBe(true);
+    });
   });
 
   it('should wrap around if told to', () => {

@@ -19,14 +19,6 @@ export class Grid {
     private onUpdate?: (image: boolean[][]) => void,
   ) {}
 
-  public getHeight(): number {
-    return this.height;
-  }
-
-  public getWidth(): number {
-    return this.width;
-  }
-
   public getCell(x: number, y: number): Cell | null {
     if (!this.shouldWrapAround) {
       if (x >= this.width || y >= this.height || x < 0 || y < 0) {
@@ -58,14 +50,14 @@ export class Grid {
     this.grid.forEach((row, j) => {
       row.forEach((cell, i) => {
         const possibleNeighbors: Array<[number, number]> = [
-          [j - 1, i - 1],
-          [j - 1, i],
-          [j - 1, i + 1],
-          [j, i - 1],
-          [j, i + 1],
-          [j + 1, i - 1],
-          [j + 1, i],
-          [j + 1, i + 1],
+          [i - 1, j - 1],
+          [i - 1, j],
+          [i - 1, j + 1],
+          [i, j - 1],
+          [i, j + 1],
+          [i + 1, j - 1],
+          [i + 1, j],
+          [i + 1, j + 1],
         ];
 
         possibleNeighbors.forEach(neighborIndex => {
