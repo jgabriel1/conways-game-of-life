@@ -9,16 +9,14 @@ import { Game } from '../core/Game';
 interface GameContextData {
   grid: boolean[][];
   toggleCell: (x: number, y: number) => void;
+  startGame: () => void;
 }
 
 type GameReducerState = { game: Game | null; grid: boolean[][] };
 
 type GameReducer = React.Reducer<
   GameReducerState,
-  | { type: 'UPDATE_GRID'; image: boolean[][] }
-  | { type: 'START_GAME' }
-  | { type: 'STOP_GAME' }
-  | { type: 'TOGGLE_CELL'; coordinates: { x: number; y: number } }
+  { type: 'UPDATE_GRID'; image: boolean[][] }
 >;
 
 const GameContext = createContext({} as GameContextData);
@@ -65,11 +63,16 @@ const GameProvider: React.FC = ({ children }) => {
     [game],
   );
 
+  const startGame = useCallback(() => {
+    game?.run();
+  }, [game]);
+
   return (
     <GameContext.Provider
       value={{
         grid,
         toggleCell,
+        startGame,
       }}
     >
       {children}
