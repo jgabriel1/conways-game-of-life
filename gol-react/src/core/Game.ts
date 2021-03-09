@@ -17,7 +17,7 @@ export class Game {
 
     private refreshRate: number,
 
-    private isRunning: boolean,
+    private timeout?: NodeJS.Timeout,
   ) {}
 
   public subscribeToImageUpdate(callback: (image: boolean[][]) => void): void {
@@ -36,16 +36,12 @@ export class Game {
     this.mainGrid.buildImage();
   }
 
-  public startGame(): void {
-    this.isRunning = true;
-  }
-
-  public stopGame(): void {
-    this.isRunning = false;
+  public stop(): void {
+    this.timeout && clearInterval(this.timeout);
   }
 
   public run(): void {
-    while (this.isRunning) {
+    this.timeout = setInterval(() => {
       // Copy data from the main grid to the off grid:
       this.mainGrid.iterRows((row, rowIndex) => {
         row.forEach((cell, cellIndex) => {
@@ -68,11 +64,8 @@ export class Game {
         });
       });
 
-      // Wait refresh rate
-      setTimeout(() => {
-        this.image = this.mainGrid.buildImage();
-      }, this.refreshRate);
-    }
+      this.image = this.mainGrid.buildImage();
+    }, this.refreshRate);
   }
 
   public static create({
@@ -93,6 +86,6 @@ export class Game {
       shouldWrapAround,
     });
 
-    return new Game(mainGrid, offGrid, [], refreshRate, false);
+    return new Game(mainGrid, offGrid, [], refreshRate);
   }
 }
