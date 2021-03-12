@@ -19,10 +19,4 @@ export class Cell {
   public addNeighbor(neighbor: Cell): void {
     this.neighbors.push(neighbor);
   }
-
-  public clone(): Cell {
-    const cloneCell = new Cell(this.isAlive);
-
-    return cloneCell;
-  }
 }
