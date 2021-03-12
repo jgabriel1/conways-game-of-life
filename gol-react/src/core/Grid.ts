@@ -87,7 +87,7 @@ export class Grid {
     return image;
   }
 
-  public iterRows(callback: (row: Cell[], index: number) => void): void {
+  public forEach(callback: (row: Cell[], index: number) => void): void {
     this.grid.forEach(callback);
   }
 

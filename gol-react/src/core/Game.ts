@@ -43,7 +43,7 @@ export class Game {
   public run(): void {
     this.timeout = setInterval(() => {
       // Copy data from the main grid to the off grid:
-      this.mainGrid.iterRows((row, rowIndex) => {
+      this.mainGrid.forEach((row, rowIndex) => {
         row.forEach((cell, cellIndex) => {
           const mainGridState = cell.isAlive;
 
@@ -54,7 +54,7 @@ export class Game {
       });
 
       // Modify the main grid based on the off grid state and game rules
-      this.offGrid.iterRows((row, rowIndex) => {
+      this.offGrid.forEach((row, rowIndex) => {
         row.forEach((cell, cellIndex) => {
           const nextState = cell.getNextLifeStatus(); // this method contains the game rules
 
