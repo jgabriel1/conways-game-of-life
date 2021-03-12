@@ -1,4 +1,5 @@
 import { Grid } from './Grid';
+import { NextLifeState } from './NextLifeState';
 
 interface GameData {
   refreshRate: number;
@@ -56,7 +57,7 @@ export class Game {
       // Modify the main grid based on the off grid state and game rules
       this.offGrid.forEach((row, rowIndex) => {
         row.forEach((cell, cellIndex) => {
-          const nextState = cell.getNextLifeStatus(); // this method contains the game rules
+          const nextState = NextLifeState.for(cell).get();
 
           const mainGridCell = this.mainGrid.getCell(cellIndex, rowIndex);
 

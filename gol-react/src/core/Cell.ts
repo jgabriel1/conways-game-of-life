@@ -20,20 +20,6 @@ export class Cell {
     this.neighbors.push(neighbor);
   }
 
-  // Probably move this code to game business rule
-  public getNextLifeStatus(): boolean {
-    const aliveNeighbors = this.neighbors.reduce(
-      (accum, neighbor) => (neighbor.isAlive ? accum + 1 : accum),
-      0,
-    );
-
-    if (aliveNeighbors === 3) return true;
-
-    if (aliveNeighbors === 2) return this.isAlive;
-
-    return false;
-  }
-
   public clone(): Cell {
     const cloneCell = new Cell(this.isAlive);
 
