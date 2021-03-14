@@ -23,8 +23,8 @@ const Grid: React.FC = () => {
         </Row>
       ))}
 
-      <button type="button" onClick={() => startGame()}>
-        Start
+      <button type="button" onClick={() => toggleGame()}>
+        {gameIsRunning ? 'Stop' : 'Start'}
       </button>
     </Container>
   );

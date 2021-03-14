@@ -37,6 +37,10 @@ export class Game {
     this.mainGrid.buildImage();
   }
 
+  public isRunning(): boolean {
+    return !!this.timeout;
+  }
+
   public stop(): void {
     this.timeout && clearInterval(this.timeout);
   }

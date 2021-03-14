@@ -4,9 +4,9 @@ import { Game } from '../core/Game';
 
 interface GameContextData {
   grid: boolean[][];
+  gameIsRunning: boolean;
   toggleCell: (x: number, y: number) => void;
-  startGame: () => void;
-  stopGame: () => void;
+  toggleGame: () => void;
 }
 
 const GameContext = createContext({} as GameContextData);
@@ -31,17 +31,30 @@ const GameProvider: React.FC = ({ children }) => {
     return newGame;
   });
 
+  const [gameIsRunning, setGameIsRunning] = useState(() => {
+    return game.isRunning();
+  });
+
   const toggleCell = useCallback(
     (x: number, y: number) => game.toggleCell(x, y),
     [game],
   );
 
-  const startGame = useCallback(() => game.run(), [game]);
+  const toggleGame = useCallback(() => {
+    game.isRunning() ? game.stop() : game.run();
 
-  const stopGame = useCallback(() => game.stop(), [game]);
+    setGameIsRunning(current => !current);
+  }, [game]);
 
   return (
-    <GameContext.Provider value={{ grid, toggleCell, startGame, stopGame }}>
+    <GameContext.Provider
+      value={{
+        grid,
+        gameIsRunning,
+        toggleCell,
+        toggleGame,
+      }}
+    >
       {children}
     </GameContext.Provider>
   );
