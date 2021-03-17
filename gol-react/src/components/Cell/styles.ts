@@ -1,20 +1,14 @@
 import styled from 'styled-components';
 
-export const Container = styled.div`
-  margin: 4px;
-  width: 64px;
-  height: 64px;
-  border: 1px solid #ccc;
-`;
+interface CellContainerProps {
+  isAlive: boolean;
+  dimension: number;
+}
 
-export const Dead = styled.div`
-  background-color: #f66;
-  width: 100%;
-  height: 100%;
-`;
+export const Container = styled.div<CellContainerProps>`
+  width: ${props => props.dimension}px;
+  height: ${props => props.dimension}px;
+  border: 1px solid #9993;
 
-export const Alive = styled.div`
-  background-color: #6f6;
-  width: 100%;
-  height: 100%;
+  background: ${props => (props.isAlive ? '#333' : '#ddd')};
 `;
