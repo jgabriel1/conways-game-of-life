@@ -2,16 +2,16 @@ import React from 'react';
 
 import Grid from './components/Grid';
 import TopBar from './components/TopBar';
-import GameProvider from './hooks/game';
+import AppProvider from './hooks';
 
 import './global.css';
 
 const App: React.FC = () => {
   return (
-    <GameProvider>
-        <TopBar />
+    <AppProvider>
+      <TopBar />
       <Grid />
-    </GameProvider>
+    </AppProvider>
   );
 };
 
