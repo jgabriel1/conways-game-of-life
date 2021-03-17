@@ -1,5 +1,7 @@
 import React, { createContext, useCallback, useContext, useState } from 'react';
 
+import { useDimensions } from './dimension';
+
 import { Game } from '../core/Game';
 
 interface GameContextData {
@@ -12,12 +14,14 @@ interface GameContextData {
 const GameContext = createContext({} as GameContextData);
 
 const GameProvider: React.FC = ({ children }) => {
+  const { cellsVertical, cellsHorizontal } = useDimensions();
+
   const [grid, setGrid] = useState<boolean[][]>([]);
 
   const [game] = useState<Game>(() => {
     const newGame = Game.create({
-      gridHeight: 20,
-      gridWidth: 20,
+      gridHeight: cellsVertical,
+      gridWidth: cellsHorizontal,
       refreshRate: 200,
       shouldWrapAround: true,
     });

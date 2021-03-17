@@ -1,13 +1,15 @@
 import React, { useCallback, useState } from 'react';
 
 import { useGame } from '../../hooks/game';
+import { useDimensions } from '../../hooks/dimension';
 
 import Cell from '../Cell';
 
 import { Container, Row } from './styles';
 
 const Grid: React.FC = () => {
-  const { grid, gameIsRunning, toggleCell, toggleGame } = useGame();
+  const { grid, toggleCell } = useGame();
+  const { cellDimension } = useDimensions();
 
   const [isMouseDown, setIsMouseDown] = useState(false);
 
@@ -29,14 +31,11 @@ const Grid: React.FC = () => {
               onHoverClicked={() => onHoverCellClicked(cellIndex, rowIndex)}
               onClick={() => toggleCell(cellIndex, rowIndex)}
               isAlive={isAlive}
+              dimension={cellDimension}
             />
           ))}
         </Row>
       ))}
-
-      <button type="button" onClick={() => toggleGame()}>
-        {gameIsRunning ? 'Stop' : 'Start'}
-      </button>
     </Container>
   );
 };
