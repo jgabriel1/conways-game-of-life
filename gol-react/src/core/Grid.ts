@@ -1,4 +1,5 @@
 import { Cell } from './Cell';
+import { IGrid } from './IGrid';
 
 export interface GridData {
   width: number;
@@ -6,18 +7,15 @@ export interface GridData {
   shouldWrapAround?: boolean;
 }
 
-export class Grid {
-  private constructor(
+export class Grid implements IGrid {
+  public constructor(
     private grid: Cell[][],
-
     private height: number,
-
     private width: number,
-
     private shouldWrapAround: boolean,
-
-    private onUpdate?: (image: boolean[][]) => void,
-  ) {}
+  ) {
+    this.buildNeighborhoodNetwork();
+  }
 
   public getCell(x: number, y: number): Cell | null {
     if (!this.shouldWrapAround) {
@@ -75,18 +73,6 @@ export class Grid {
     cell?.setIsAlive(!cell.isAlive);
   }
 
-  public setUpdateCallback(callback: (image: boolean[][]) => void): void {
-    this.onUpdate = callback;
-  }
-
-  public buildImage(): boolean[][] {
-    const image = this.grid.map(row => row.map(cell => cell.isAlive));
-
-    if (this.onUpdate) this.onUpdate(image);
-
-    return image;
-  }
-
   public forEach(callback: (row: Cell[], index: number) => void): void {
     this.grid.forEach(callback);
   }
@@ -106,8 +92,6 @@ export class Grid {
     );
 
     const grid = new Grid(cellArray, height, width, shouldWrapAround);
-
-    grid.buildNeighborhoodNetwork();
 
     return grid;
   }
