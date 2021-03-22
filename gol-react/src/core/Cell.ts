@@ -3,8 +3,8 @@ export class Cell {
 
   private neighbors: Cell[];
 
-  public constructor(isAlive?: boolean) {
-    this.isAlive = isAlive || false;
+  public constructor(isAlive = false) {
+    this.isAlive = isAlive;
     this.neighbors = [];
   }
 
