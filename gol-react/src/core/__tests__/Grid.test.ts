@@ -1,6 +1,6 @@
 /* eslint-disable no-plusplus */
-import { Cell } from './Cell';
-import { Grid } from './Grid';
+import { Cell } from '../Cell';
+import { Grid } from '../Grid';
 
 describe('Grid', () => {
   it('should create a grid for a given size', () => {
