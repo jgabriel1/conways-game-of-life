@@ -3,6 +3,8 @@ import React, { createContext, useCallback, useContext, useState } from 'react';
 import { useDimensions } from './dimension';
 
 import { Game } from '../core/Game';
+import { GridWithImage } from '../core/adapters/GridWithImage';
+import { gameFactory } from '../core/factories/gameFactory';
 
 interface GameContextData {
   grid: boolean[][];
@@ -19,18 +21,22 @@ const GameProvider: React.FC = ({ children }) => {
   const [grid, setGrid] = useState<boolean[][]>([]);
 
   const [game] = useState<Game>(() => {
-    const newGame = Game.create({
+    const gridWithImage = GridWithImage.create({
+      height: cellsVertical,
+      width: cellsHorizontal,
+      shouldWrapAround: true,
+      onImageUpdateCallback: image => setGrid(image),
+    });
+
+    setGrid(gridWithImage.getImage());
+
+    const newGame = gameFactory({
+      mainGridFactory: () => gridWithImage,
       gridHeight: cellsVertical,
       gridWidth: cellsHorizontal,
       refreshRate: 200,
       shouldWrapAround: true,
     });
-
-    const initialImage = newGame.getImage();
-
-    setGrid(initialImage);
-
-    newGame.subscribeToImageUpdate(image => setGrid(image));
 
     return newGame;
   });
