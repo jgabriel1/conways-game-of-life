@@ -1,40 +1,16 @@
-import { Grid } from './Grid';
+import { IGrid } from './IGrid';
 import { NextLifeState } from './NextLifeState';
 
-interface GameData {
-  refreshRate: number;
-  gridHeight: number;
-  gridWidth: number;
-  shouldWrapAround: boolean;
-}
-
 export class Game {
-  private constructor(
-    private mainGrid: Grid,
-
-    private offGrid: Grid,
-
-    private image: boolean[][],
-
+  public constructor(
+    private mainGrid: IGrid,
+    private offGrid: IGrid,
     private refreshRate: number,
-
     private timeout?: NodeJS.Timeout,
   ) {}
 
-  public subscribeToImageUpdate(callback: (image: boolean[][]) => void): void {
-    this.mainGrid.setUpdateCallback(callback);
-  }
-
-  public getImage(): boolean[][] {
-    this.image = this.mainGrid.buildImage();
-
-    return this.image;
-  }
-
-  public toggleCell(x: number, y: number): void {
+  public toggleCell(x: number, y: number) {
     this.mainGrid.toggleCell(x, y);
-
-    this.mainGrid.buildImage();
   }
 
   public isRunning(): boolean {
@@ -68,29 +44,6 @@ export class Game {
           mainGridCell?.setIsAlive(nextState);
         });
       });
-
-      this.image = this.mainGrid.buildImage();
     }, this.refreshRate);
-  }
-
-  public static create({
-    gridHeight,
-    gridWidth,
-    shouldWrapAround,
-    refreshRate = 200,
-  }: GameData): Game {
-    const mainGrid = Grid.create({
-      height: gridHeight,
-      width: gridWidth,
-      shouldWrapAround,
-    });
-
-    const offGrid = Grid.create({
-      height: gridHeight,
-      width: gridWidth,
-      shouldWrapAround,
-    });
-
-    return new Game(mainGrid, offGrid, [], refreshRate);
   }
 }
