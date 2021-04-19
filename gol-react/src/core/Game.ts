@@ -18,7 +18,11 @@ export class Game {
   }
 
   public stop(): void {
-    this.timeout && clearInterval(this.timeout);
+    if (this.timeout) {
+      clearInterval(this.timeout);
+
+      delete this.timeout;
+    }
   }
 
   public run(): void {
