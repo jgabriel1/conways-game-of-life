@@ -16,13 +16,12 @@ export const Grid: React.FC = () => {
   );
 
   return (
-    <Flex align="center" justify="center" bg="gray.100">
+    <Flex align="center" justify="center" bg="gray.100" flex="1">
       <ChakraGrid
         templateColumns={`repeat(${cellsHorizontal}, 1fr)`}
         templateRows={`repeat(${cellsVertical}, 1fr)`}
         onMouseDown={() => setIsMouseDown(true)}
         onMouseUp={() => setIsMouseDown(false)}
-        height="100%"
       >
         {grid.map((row, rowIndex) =>
           row.map((isAlive, cellIndex) => (
