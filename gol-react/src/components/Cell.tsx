@@ -1,6 +1,5 @@
+import { Box } from '@chakra-ui/react';
 import React from 'react';
-
-import { Container } from './styles';
 
 interface CellProps {
   onHoverClicked: () => void;
@@ -9,20 +8,22 @@ interface CellProps {
   dimension: number;
 }
 
-const Cell: React.FC<CellProps> = ({
-  isAlive,
+export const Cell: React.FC<CellProps> = ({
   onHoverClicked,
   onClick,
+  isAlive,
   dimension,
 }) => {
   return (
-    <Container
+    <Box
       onMouseEnter={onHoverClicked}
       onMouseDown={onClick}
-      isAlive={!!isAlive}
-      dimension={dimension}
+      border="1px"
+      borderColor="whiteAlpha.300"
+      borderRadius="sm"
+      h={`${dimension}px`}
+      w={`${dimension}px`}
+      bg={isAlive ? 'gray.500' : 'gray.200'}
     />
   );
 };
-
-export default Cell;
