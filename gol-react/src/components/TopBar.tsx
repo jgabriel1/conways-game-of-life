@@ -30,7 +30,12 @@ export const TopBar: React.FC = () => {
           size="lg"
           colorScheme={gameIsRunning ? 'red' : 'teal'}
         >
-          <Text>{gameIsRunning ? 'Stop' : 'Start'}</Text>
+          <Text
+            fontWeight="medium"
+            color={gameIsRunning ? 'gray.800' : 'inherit'}
+          >
+            {gameIsRunning ? 'Stop' : 'Start'}
+          </Text>
         </Button>
 
         <Button
@@ -42,7 +47,7 @@ export const TopBar: React.FC = () => {
             console.log('reset game');
           }}
         >
-          <Text>Reset</Text>
+          <Text fontWeight="medium">Reset</Text>
         </Button>
       </Flex>
     </Flex>
