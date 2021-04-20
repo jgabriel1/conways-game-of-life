@@ -7,13 +7,16 @@ import AppProvider from './hooks';
 
 import { theme } from './styles/theme';
 import './global.css';
+import { AppContainer } from './components/AppContainer';
 
 const App: React.FC = () => {
   return (
     <ChakraProvider theme={theme}>
       <AppProvider>
-        <TopBar />
-        <Grid />
+        <AppContainer>
+          <TopBar />
+          <Grid />
+        </AppContainer>
       </AppProvider>
     </ChakraProvider>
   );
