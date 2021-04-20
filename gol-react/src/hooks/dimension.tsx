@@ -13,8 +13,8 @@ const DimensionsContext = createContext<DimensionsContextData>(
 const MINIMUM_CELL_DIMENSION = 32;
 
 const DimensionsProvider: React.FC = ({ children }) => {
-  const height = window.innerHeight - 100;
-  const width = window.innerWidth;
+  const height = window.innerHeight - 64;
+  const width = window.innerWidth - 64;
 
   const cellDimension = MINIMUM_CELL_DIMENSION;
 
