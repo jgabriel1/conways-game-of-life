@@ -47,6 +47,12 @@ const GameProvider: React.FC = ({ children }) => {
   });
 
   const generateRandomGame = useCallback(() => {
+    /*
+      Return early if game is running. This could cause problems with internal
+      game logic. Simply blocking it for simplicity.
+    */
+    if (gameIsRunning) return;
+
     const gridWithImage = GridWithImage.createRandom({
       height: cellsVertical,
       width: cellsHorizontal,
@@ -65,7 +71,7 @@ const GameProvider: React.FC = ({ children }) => {
     });
 
     setGame(newGame);
-  }, [cellsHorizontal, cellsVertical]);
+  }, [cellsHorizontal, cellsVertical, gameIsRunning]);
 
   const toggleCell = useCallback(
     (x: number, y: number) => game.toggleCell(x, y),

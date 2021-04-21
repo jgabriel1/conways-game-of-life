@@ -44,6 +44,7 @@ export const TopBar: React.FC = () => {
           size="lg"
           colorScheme="blue"
           onClick={() => generateRandomGame()}
+          disabled={gameIsRunning}
         >
           <Text fontWeight="medium">Generate</Text>
         </Button>
