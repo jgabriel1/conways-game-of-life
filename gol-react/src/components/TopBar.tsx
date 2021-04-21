@@ -4,7 +4,7 @@ import { Button, Flex, Heading, Text } from '@chakra-ui/react';
 import { useGame } from '../hooks/game';
 
 export const TopBar: React.FC = () => {
-  const { gameIsRunning, toggleGame } = useGame();
+  const { gameIsRunning, toggleGame, generateRandomGame } = useGame();
 
   const title = "Conway's Game of Life";
 
@@ -28,7 +28,7 @@ export const TopBar: React.FC = () => {
           w="100px"
           onClick={() => toggleGame()}
           size="lg"
-          colorScheme={gameIsRunning ? 'red' : 'teal'}
+          colorScheme={gameIsRunning ? 'red' : 'green'}
         >
           <Text
             fontWeight="medium"
@@ -43,11 +43,9 @@ export const TopBar: React.FC = () => {
           w="100px"
           size="lg"
           colorScheme="blue"
-          onClick={() => {
-            console.log('reset game');
-          }}
+          onClick={() => generateRandomGame()}
         >
-          <Text fontWeight="medium">Reset</Text>
+          <Text fontWeight="medium">Generate</Text>
         </Button>
       </Flex>
     </Flex>
