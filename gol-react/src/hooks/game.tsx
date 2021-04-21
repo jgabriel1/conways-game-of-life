@@ -21,7 +21,7 @@ const GameProvider: React.FC = ({ children }) => {
   const [grid, setGrid] = useState<boolean[][]>([]);
 
   const [game] = useState<Game>(() => {
-    const gridWithImage = GridWithImage.create({
+    const gridWithImage = GridWithImage.createRandom({
       height: cellsVertical,
       width: cellsHorizontal,
       shouldWrapAround: true,
