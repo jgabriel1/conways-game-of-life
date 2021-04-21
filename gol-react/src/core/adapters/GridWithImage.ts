@@ -1,6 +1,7 @@
 import { Cell } from '../Cell';
 import { Grid, GridData } from '../Grid';
 import { IGrid } from '../IGrid';
+import { generateRiggedBoolean } from '../util/generateRiggedBoolean';
 import { CellChangeObserver } from './CellChangeObserver';
 import { ObservableCell } from './ObservableCell';
 
@@ -87,6 +88,34 @@ export class GridWithImage implements IGrid {
         Array(width),
         () => new ObservableCell(false, cellChangeObserver),
       ),
+    );
+
+    const grid = new Grid(cellArray, height, width, shouldWrapAround);
+
+    const gridWithImage = new GridWithImage(
+      grid,
+      [],
+      cellChangeObserver,
+      onImageUpdateCallback,
+    );
+
+    return gridWithImage;
+  }
+
+  public static createRandom({
+    height,
+    width,
+    shouldWrapAround = true,
+    onImageUpdateCallback,
+  }: GridWithImageData): GridWithImage {
+    const cellChangeObserver = new CellChangeObserver();
+
+    const cellArray = Array.from(Array(height), () =>
+      Array.from(Array(width), () => {
+        const cellIsAlive = generateRiggedBoolean(0.66);
+
+        return new ObservableCell(cellIsAlive, cellChangeObserver);
+      }),
     );
 
     const grid = new Grid(cellArray, height, width, shouldWrapAround);
