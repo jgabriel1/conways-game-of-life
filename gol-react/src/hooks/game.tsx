@@ -9,6 +9,7 @@ import { gameFactory } from '../core/factories/gameFactory';
 interface GameContextData {
   grid: boolean[][];
   gameIsRunning: boolean;
+  resetGame: () => void;
   generateRandomGame: () => void;
   toggleCell: (x: number, y: number) => void;
   toggleGame: () => void;
@@ -73,6 +74,33 @@ const GameProvider: React.FC = ({ children }) => {
     setGame(newGame);
   }, [cellsHorizontal, cellsVertical, gameIsRunning]);
 
+  const resetGame = useCallback(() => {
+    /*
+      Return early if game is running. This could cause problems with internal
+      game logic. Simply blocking it for simplicity.
+    */
+    if (gameIsRunning) return;
+
+    const gridWithImage = GridWithImage.create({
+      height: cellsVertical,
+      width: cellsHorizontal,
+      shouldWrapAround: true,
+      onImageUpdateCallback: image => setGrid(image),
+    });
+
+    setGrid(gridWithImage.getImage());
+
+    const newGame = gameFactory({
+      mainGridFactory: () => gridWithImage,
+      gridHeight: cellsVertical,
+      gridWidth: cellsHorizontal,
+      refreshRate: 200,
+      shouldWrapAround: true,
+    });
+
+    setGame(newGame);
+  }, [cellsHorizontal, cellsVertical, gameIsRunning]);
+
   const toggleCell = useCallback(
     (x: number, y: number) => game.toggleCell(x, y),
     [game],
@@ -89,6 +117,7 @@ const GameProvider: React.FC = ({ children }) => {
       value={{
         grid,
         gameIsRunning,
+        resetGame,
         generateRandomGame,
         toggleCell,
         toggleGame,
