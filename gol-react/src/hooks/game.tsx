@@ -3,8 +3,7 @@ import React, { createContext, useCallback, useContext, useState } from 'react';
 import { useDimensions } from './dimension';
 
 import { Game } from '../core/Game';
-import { GridWithImage } from '../core/adapters/GridWithImage';
-import { gameFactory } from '../core/factories/gameFactory';
+import { createGameWithImage } from '../core/factories/createGameWithImage';
 
 interface GameContextData {
   grid: boolean[][];
@@ -23,21 +22,11 @@ const GameProvider: React.FC = ({ children }) => {
   const [grid, setGrid] = useState<boolean[][]>([]);
 
   const [game, setGame] = useState<Game>(() => {
-    const gridWithImage = GridWithImage.create({
-      height: cellsVertical,
-      width: cellsHorizontal,
-      shouldWrapAround: true,
-      onImageUpdateCallback: image => setGrid(image),
-    });
-
-    setGrid(gridWithImage.getImage());
-
-    const newGame = gameFactory({
-      mainGridFactory: () => gridWithImage,
+    const newGame = createGameWithImage({
       gridHeight: cellsVertical,
       gridWidth: cellsHorizontal,
-      refreshRate: 200,
-      shouldWrapAround: true,
+      gridType: 'clear',
+      onImageUpdateCallback: image => setGrid(image),
     });
 
     return newGame;
@@ -54,21 +43,11 @@ const GameProvider: React.FC = ({ children }) => {
     */
     if (gameIsRunning) return;
 
-    const gridWithImage = GridWithImage.createRandom({
-      height: cellsVertical,
-      width: cellsHorizontal,
-      shouldWrapAround: true,
-      onImageUpdateCallback: image => setGrid(image),
-    });
-
-    setGrid(gridWithImage.getImage());
-
-    const newGame = gameFactory({
-      mainGridFactory: () => gridWithImage,
+    const newGame = createGameWithImage({
       gridHeight: cellsVertical,
       gridWidth: cellsHorizontal,
-      refreshRate: 200,
-      shouldWrapAround: true,
+      gridType: 'random',
+      onImageUpdateCallback: image => setGrid(image),
     });
 
     setGame(newGame);
@@ -81,28 +60,20 @@ const GameProvider: React.FC = ({ children }) => {
     */
     if (gameIsRunning) return;
 
-    const gridWithImage = GridWithImage.create({
-      height: cellsVertical,
-      width: cellsHorizontal,
-      shouldWrapAround: true,
-      onImageUpdateCallback: image => setGrid(image),
-    });
-
-    setGrid(gridWithImage.getImage());
-
-    const newGame = gameFactory({
-      mainGridFactory: () => gridWithImage,
+    const newGame = createGameWithImage({
       gridHeight: cellsVertical,
       gridWidth: cellsHorizontal,
-      refreshRate: 200,
-      shouldWrapAround: true,
+      gridType: 'clear',
+      onImageUpdateCallback: image => setGrid(image),
     });
 
     setGame(newGame);
   }, [cellsHorizontal, cellsVertical, gameIsRunning]);
 
   const toggleCell = useCallback(
-    (x: number, y: number) => game.toggleCell(x, y),
+    (x: number, y: number) => {
+      game.toggleCell(x, y);
+    },
     [game],
   );
 

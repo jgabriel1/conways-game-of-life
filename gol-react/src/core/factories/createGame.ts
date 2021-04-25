@@ -2,23 +2,23 @@ import { Game } from '../Game';
 import { Grid } from '../Grid';
 import { IGrid } from '../IGrid';
 
-interface GameFactoryData {
-  mainGridFactory?: () => IGrid;
-  offGridFactory?: () => IGrid;
-  refreshRate: number;
+export interface CreateGameOptions {
   gridHeight: number;
   gridWidth: number;
-  shouldWrapAround: boolean;
+  mainGridFactory?: () => IGrid;
+  offGridFactory?: () => IGrid;
+  refreshRate?: number;
+  shouldWrapAround?: boolean;
 }
 
-export function gameFactory({
+export function createGame({
   mainGridFactory,
   offGridFactory,
   gridHeight,
   gridWidth,
-  shouldWrapAround,
+  shouldWrapAround = true,
   refreshRate = 200,
-}: GameFactoryData): Game {
+}: CreateGameOptions): Game {
   const mainGrid = mainGridFactory
     ? mainGridFactory()
     : Grid.create({
