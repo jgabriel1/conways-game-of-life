@@ -1,5 +1,5 @@
+import { Cell } from './Cell';
 import { IGrid } from './IGrid';
-import { NextLifeState } from './NextLifeState';
 
 export class Game {
   public constructor(
@@ -41,7 +41,7 @@ export class Game {
       // Modify the main grid based on the off grid state and game rules
       this.offGrid.forEach((row, rowIndex) => {
         row.forEach((cell, cellIndex) => {
-          const nextState = NextLifeState.for(cell).get();
+          const nextState = Game.getNextLifeStatus(cell);
 
           const mainGridCell = this.mainGrid.getCell(cellIndex, rowIndex);
 
@@ -49,5 +49,17 @@ export class Game {
         });
       });
     }, this.refreshRate);
+  }
+
+  private static getNextLifeStatus(cell: Cell): boolean {
+    const aliveNeighbors = cell
+      .getNeighbors()
+      .reduce((accum, neighbor) => (neighbor.isAlive ? accum + 1 : accum), 0);
+
+    if (aliveNeighbors === 3) return true;
+
+    if (aliveNeighbors === 2) return cell.isAlive;
+
+    return false;
   }
 }
