@@ -22,6 +22,7 @@ export const Grid: React.FC = () => {
         templateRows={`repeat(${cellsVertical}, 1fr)`}
         onMouseDown={() => setIsMouseDown(true)}
         onMouseUp={() => setIsMouseDown(false)}
+        onMouseLeave={() => setIsMouseDown(false)}
       >
         {grid.map((row, rowIndex) =>
           row.map((isAlive, cellIndex) => (
