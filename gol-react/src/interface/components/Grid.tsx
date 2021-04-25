@@ -1,7 +1,9 @@
 import React, { useCallback, useState } from 'react';
 import { Flex, Grid as ChakraGrid } from '@chakra-ui/react';
+
 import { useGame } from '../hooks/game';
 import { useDimensions } from '../hooks/dimension';
+
 import { Cell } from './Cell';
 
 export const Grid: React.FC = () => {
