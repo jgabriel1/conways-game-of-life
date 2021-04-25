@@ -2,8 +2,8 @@ import React, { createContext, useCallback, useContext, useState } from 'react';
 
 import { useDimensions } from './dimension';
 
-import { Game } from '../core/Game';
-import { createGameWithImage } from '../core/factories/createGameWithImage';
+import { Game } from '../../core/Game';
+import { createGameWithImage } from '../../core/factories/createGameWithImage';
 
 interface GameContextData {
   grid: boolean[][];
