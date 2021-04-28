@@ -2,6 +2,7 @@
   "name": "game-of-life",
   "version": "0.1.0",
   "private": true,
+  "homepage": "http://jgabriel1.github.io/conways-game-of-life",
   "dependencies": {
     "@chakra-ui/react": "^1.5.2",
     "@emotion/react": "^11",
