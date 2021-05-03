@@ -1,5 +1,14 @@
 import React from 'react';
-import { Box, Button, Flex, Heading, Text } from '@chakra-ui/react';
+import {
+  Box,
+  Button,
+  Flex,
+  Heading,
+  Text,
+  IconButton,
+  useBreakpointValue,
+} from '@chakra-ui/react';
+import { FaPlay as PlayIcon, FaPause as StopIcon } from 'react-icons/fa';
 
 import { useGame } from '../hooks/game';
 
@@ -10,6 +19,11 @@ export const TopBar: React.FC = () => {
     generateRandomGame,
     resetGame,
   } = useGame();
+
+  const isScreenWide = useBreakpointValue({
+    base: false,
+    lg: true,
+  });
 
   const title = "Conway's Game of Life";
 
@@ -29,20 +43,32 @@ export const TopBar: React.FC = () => {
         </Heading>
 
         <Flex gridGap="2">
-          <Button
-            type="button"
-            w="100px"
-            onClick={() => toggleGame()}
-            size="lg"
-            colorScheme={gameIsRunning ? 'red' : 'green'}
-          >
-            <Text
-              fontWeight="medium"
-              color={gameIsRunning ? 'gray.800' : 'inherit'}
+          {isScreenWide ? (
+            <Button
+              type="button"
+              w="100px"
+              onClick={() => toggleGame()}
+              size="lg"
+              colorScheme={gameIsRunning ? 'red' : 'green'}
             >
-              {gameIsRunning ? 'Stop' : 'Start'}
-            </Text>
-          </Button>
+              <Text
+                fontWeight="medium"
+                color={gameIsRunning ? 'gray.800' : 'inherit'}
+              >
+                {gameIsRunning ? 'Stop' : 'Start'}
+              </Text>
+            </Button>
+          ) : (
+            <IconButton
+              colorScheme={gameIsRunning ? 'red' : 'green'}
+              type="button"
+              aria-label="toggle-game"
+              icon={gameIsRunning ? <StopIcon /> : <PlayIcon />}
+              size="lg"
+              fontSize="20px"
+              onClick={() => toggleGame()}
+            />
+          )}
 
           <Button
             type="button"
