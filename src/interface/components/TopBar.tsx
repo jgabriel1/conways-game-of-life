@@ -22,7 +22,7 @@ export const TopBar: React.FC = () => {
 
   const isScreenWide = useBreakpointValue({
     base: false,
-    lg: true,
+    md: true,
   });
 
   const title = "Conway's Game of Life";
