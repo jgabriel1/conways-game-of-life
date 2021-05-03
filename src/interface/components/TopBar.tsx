@@ -7,8 +7,16 @@ import {
   Text,
   IconButton,
   useBreakpointValue,
+  Menu,
+  MenuButton,
+  MenuList,
+  VStack,
 } from '@chakra-ui/react';
-import { FaPlay as PlayIcon, FaPause as StopIcon } from 'react-icons/fa';
+import {
+  FaPlay as PlayIcon,
+  FaPause as StopIcon,
+  FaBars as MenuIcon,
+} from 'react-icons/fa';
 
 import { useGame } from '../hooks/game';
 
@@ -70,28 +78,73 @@ export const TopBar: React.FC = () => {
             />
           )}
 
-          <Button
-            type="button"
-            w="100px"
-            size="lg"
-            colorScheme="blue"
-            onClick={() => generateRandomGame()}
-            disabled={gameIsRunning}
-          >
-            <Text fontWeight="medium">Generate</Text>
-          </Button>
+          {isScreenWide ? (
+            <>
+              <Button
+                type="button"
+                w="100px"
+                size="lg"
+                colorScheme="blue"
+                onClick={() => generateRandomGame()}
+                disabled={gameIsRunning}
+              >
+                <Text fontWeight="medium">Generate</Text>
+              </Button>
 
-          <Button
-            type="button"
-            w="100px"
-            size="lg"
-            colorScheme="blue"
-            variant="solid"
-            onClick={() => resetGame()}
-            disabled={gameIsRunning}
-          >
-            <Text fontWeight="medium">Clear</Text>
-          </Button>
+              <Button
+                type="button"
+                w="100px"
+                size="lg"
+                colorScheme="blue"
+                variant="solid"
+                onClick={() => resetGame()}
+                disabled={gameIsRunning}
+              >
+                <Text fontWeight="medium">Clear</Text>
+              </Button>
+            </>
+          ) : (
+            <Menu size="lg">
+              <MenuButton
+                as={IconButton}
+                type="button"
+                colorScheme="whiteAlpha"
+                color="whiteAlpha.900"
+                aria-label="menu-toggle"
+                icon={<MenuIcon />}
+                size="lg"
+                fontSize="20px"
+                variant="ghost"
+                disabled={gameIsRunning}
+              />
+
+              <MenuList minW="128px" bg="transparent" border="none">
+                <VStack>
+                  <Button
+                    type="button"
+                    w="100px"
+                    size="md"
+                    colorScheme="blue"
+                    onClick={() => generateRandomGame()}
+                    disabled={gameIsRunning}
+                  >
+                    <Text fontWeight="medium">Generate</Text>
+                  </Button>
+
+                  <Button
+                    type="button"
+                    w="100px"
+                    size="md"
+                    colorScheme="blue"
+                    onClick={() => resetGame()}
+                    disabled={gameIsRunning}
+                  >
+                    <Text fontWeight="medium">Clear</Text>
+                  </Button>
+                </VStack>
+              </MenuList>
+            </Menu>
+          )}
         </Flex>
       </Flex>
     </Box>
