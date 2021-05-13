@@ -34,6 +34,7 @@ export const Grid: React.FC = () => {
               onClick={() => toggleCell(cellIndex, rowIndex)}
               isAlive={isAlive}
               dimension={cellDimension}
+              isClicked={isMouseDown}
             />
           )),
         )}
