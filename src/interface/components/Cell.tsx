@@ -2,19 +2,19 @@ import React, { memo } from 'react';
 import { Box } from '@chakra-ui/react';
 
 interface CellProps {
-  onHoverClicked: () => void;
-  onClick: () => void;
-  isAlive?: boolean;
   dimension: number;
+  coordinates: [number, number];
+  isAlive?: boolean;
   isClicked?: boolean;
+  toggleCell: (x: number, y: number) => void;
 }
 
 export const Cell: React.FC<CellProps> = memo(
-  ({ onHoverClicked, onClick, isAlive, dimension }) => {
+  ({ dimension, isAlive, coordinates: [x, y], toggleCell, isClicked }) => {
     return (
       <Box
-        onMouseEnter={onHoverClicked}
-        onMouseDown={onClick}
+        onMouseEnter={() => isClicked && toggleCell(x, y)}
+        onMouseDown={() => toggleCell(x, y)}
         border="1px"
         borderColor="whiteAlpha.300"
         borderRadius="sm"
@@ -26,5 +26,5 @@ export const Cell: React.FC<CellProps> = memo(
   },
   (oldProps, newProps) =>
     oldProps.isAlive === newProps.isAlive &&
-    oldProps?.isClicked === newProps?.isClicked,
+    oldProps.isClicked === newProps.isClicked,
 );
