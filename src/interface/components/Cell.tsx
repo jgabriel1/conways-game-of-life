@@ -21,6 +21,7 @@ export const Cell: React.FC<CellProps> = memo(
         h={`${dimension}px`}
         w={`${dimension}px`}
         bg={isAlive ? 'gray.500' : 'gray.200'}
+        __css={{ userSelect: 'none' }}
       />
     );
   },
